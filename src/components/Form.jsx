@@ -1,67 +1,74 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 
 const Form = (props) => {
+  //Object to store values data
   const [formData, setFormData] = useState({
     currentSavings: "",
     yearlySavings: "",
     expectedInterest: "",
     investmentDuration: "",
   });
+
+  //Refs to inputs
+  const currentSavingsRef = useRef();
+  const yearlySavingsRef = useRef();
+  const expectedInterestRef = useRef();
+  const investmentDurationRef = useRef();
+
+  //Push back formData values to parent element - App.js
   const calculateDataHandler = (event) => {
     event.preventDefault();
-    // ---- Should be triggered when form is submitted
-    // ---- You might not directly want to bind it to the submit event on the form though...
-
-    // const yearlyData = []; // per-year results
-
-    // let currentSavings = +userInput["current-savings"]; // feel free to change the shape of this input object!
-    // const yearlyContribution = +userInput["yearly-contribution"]; // as mentioned: feel free to change the shape...
-    // const expectedReturn = +userInput["expected-return"] / 100;
-    // const duration = +userInput["duration"];
-
-    // // The below code calculates yearly results (total savings, interest etc)
-    // for (let i = 0; i < duration; i++) {
-    //   const yearlyInterest = currentSavings * expectedReturn;
-    //   currentSavings += yearlyInterest + yearlyContribution;
-    //   yearlyData.push({
-    //     // feel free to change the shape of the data pushed to the array!
-    //     year: i + 1,
-    //     yearlyInterest: yearlyInterest,
-    //     savingsEndOfYear: currentSavings,
-    //     yearlyContribution: yearlyContribution,
-    //   });
-    // }
     props.onSubmittingInputs(formData);
-    // do something with yearlyData ...
   };
+
+  //Save current savings value
   const handleCurrentSavingsValue = (event) => {
     const value = event.target.value;
     setFormData((prevFormData) => ({
       ...prevFormData,
-      currentSavings: value,
+      currentSavings: +value,
     }));
   };
 
+  //Sav yearly savings valuevalue
   const handleYearlySavings = (event) => {
     const value = event.target.value;
     setFormData((prevFormData) => ({
       ...prevFormData,
-      yearlySavings: value,
+      yearlySavings: +value,
     }));
   };
+
+  //Save expected interest value
   const handleExpectedInterest = (event) => {
-    const value = event.target.value;
+    const value = event.target.value / 100;
     setFormData((prevFormData) => ({
       ...prevFormData,
-      expectedInterest: value,
+      expectedInterest: +value,
     }));
   };
+
+  //Save investment duration value
   const handleInvestmentDuration = (event) => {
     const value = event.target.value;
     setFormData((prevFormData) => ({
       ...prevFormData,
-      investmentDuration: value,
+      investmentDuration: +value,
     }));
+  };
+
+  //Reset form values and object values
+  const resetValuesHandler = () => {
+    setFormData({
+      currentSavings: "",
+      yearlySavings: "",
+      expectedInterest: "",
+      investmentDuration: "",
+    });
+    currentSavingsRef.current.value = "";
+    yearlySavingsRef.current.value = "";
+    expectedInterestRef.current.value = "";
+    investmentDurationRef.current.value = "";
   };
 
   return (
@@ -72,6 +79,7 @@ const Form = (props) => {
           <input
             type="number"
             id="current-savings"
+            ref={currentSavingsRef}
             onChange={handleCurrentSavingsValue}
           />
         </p>
@@ -79,6 +87,7 @@ const Form = (props) => {
           <label htmlFor="yearly-contribution">Yearly Savings ($)</label>
           <input
             type="number"
+            ref={yearlySavingsRef}
             id="yearly-contribution"
             onChange={handleYearlySavings}
           />
@@ -92,6 +101,7 @@ const Form = (props) => {
           <input
             type="number"
             id="expected-return"
+            ref={expectedInterestRef}
             onChange={handleExpectedInterest}
           />
         </p>
@@ -100,12 +110,17 @@ const Form = (props) => {
           <input
             type="number"
             id="duration"
+            ref={investmentDurationRef}
             onChange={handleInvestmentDuration}
           />
         </p>
       </div>
       <p className="actions">
-        <button type="reset" className="buttonAlt">
+        <button
+          type="button"
+          className="buttonAlt"
+          onClick={resetValuesHandler}
+        >
           Reset
         </button>
         <button type="submit" className="button" onClick={calculateDataHandler}>

@@ -1,26 +1,31 @@
+import React, { useState, useEffect } from "react";
 import logo from "./assets/investment-calculator-logo.png";
 import Form from "./components/Form";
+import TableRow from "./components/TableRow";
 
 function App() {
+  const [calculatedData, setCalculatedData] = useState([]);
   const handleArrayOfInputValues = (arr) => {
-    console.log(arr);
-
     // The below code calculates yearly results (total savings, interest etc)
     for (let i = 0; i < arr.investmentDuration; i++) {
-      const yearlyInterest = arr.currentSavings * arr.yearlySavings;
+      const yearlyInterest = arr.currentSavings * arr.expectedInterest;
       arr.currentSavings += yearlyInterest + arr.yearlySavings;
+
+      //dodac total interest i invested capital
 
       const result = [];
       result.push({
-        // feel free to change the shape of the data pushed to the array!
         year: i + 1,
         yearlyInterest: yearlyInterest,
         savingsEndOfYear: arr.currentSavings,
         yearlyContribution: arr.yearlySavings,
       });
-      console.log(result);
+      setCalculatedData((prevData) => [...prevData, result]);
     }
   };
+  useEffect(() => {
+    console.log(calculatedData);
+  }, [calculatedData]);
   return (
     <div>
       <header className="header">
@@ -44,13 +49,15 @@ function App() {
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>YEAR NUMBER</td>
-            <td>TOTAL SAVINGS END OF YEAR</td>
-            <td>INTEREST GAINED IN YEAR</td>
-            <td>TOTAL INTEREST GAINED</td>
-            <td>TOTAL INVESTED CAPITAL</td>
-          </tr>
+          {calculatedData.map((item) => (
+            <TableRow
+              key={Math.random()}
+              year={item.year}
+              yearlyInterest={item.yearlyInterest}
+              savingsEndOfYear={item.savingsEndOfYear}
+              yearlyContribution={item.yearlyContribution}
+            />
+          ))}
         </tbody>
       </table>
     </div>
