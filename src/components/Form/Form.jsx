@@ -1,4 +1,5 @@
 import React, { useState, useRef } from "react";
+import classes from "./Form.module.css";
 
 const Form = (props) => {
   //Object to store values data
@@ -59,6 +60,7 @@ const Form = (props) => {
 
   //Reset form values and object values
   const resetValuesHandler = () => {
+    props.onResetTable();
     setFormData({
       currentSavings: "",
       yearlySavings: "",
@@ -72,7 +74,7 @@ const Form = (props) => {
   };
 
   return (
-    <form className="form">
+    <form onSubmit={calculateDataHandler} className="form">
       <div className="input-group">
         <p>
           <label htmlFor="current-savings">Current Savings ($)</label>
@@ -123,7 +125,7 @@ const Form = (props) => {
         >
           Reset
         </button>
-        <button type="submit" className="button" onClick={calculateDataHandler}>
+        <button type="submit" className="button">
           Calculate
         </button>
       </p>
