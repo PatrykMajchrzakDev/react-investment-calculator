@@ -74,8 +74,8 @@ const Form = (props) => {
   };
 
   return (
-    <form onSubmit={calculateDataHandler} className="form">
-      <div className="input-group">
+    <form onSubmit={calculateDataHandler} className={classes.form}>
+      <div className={classes["input-group"]}>
         <p>
           <label htmlFor="current-savings">Current Savings ($)</label>
           <input
@@ -117,15 +117,15 @@ const Form = (props) => {
           />
         </p>
       </div>
-      <p className="actions">
+      <p className={classes.actions}>
         <button
           type="button"
-          className="buttonAlt"
+          className={classes.buttonAlt}
           onClick={resetValuesHandler}
         >
           Reset
         </button>
-        <button type="submit" className="button">
+        <button type="submit" className={classes.button}>
           Calculate
         </button>
       </p>

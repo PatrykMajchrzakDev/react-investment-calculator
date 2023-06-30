@@ -7,6 +7,7 @@ const Header = () => {
     <header className={classes.header}>
       <img src={logo} alt="logo" />
       <h1>Investment Calculator</h1>
+      <h2>Input some data and let the calculator do the magic!</h2>
     </header>
   );
 };
